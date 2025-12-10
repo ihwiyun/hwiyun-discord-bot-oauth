@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>치지직 인증 완료 - 휘윤 봇</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00d9ff 0%, #00a8cc 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header .icon {
+            font-size: 32px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .success-box .check-icon {
+            font-size: 32px;
+            color: #4caf50;
+        }
+
+        .success-box .text {
+            flex: 1;
+        }
+
+        .success-box .text h2 {
+            color: #2e7d32;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .success-box .text p {
+            color: #388e3c;
+            font-size: 14px;
+        }
+
+        .code-section {
+            margin-bottom: 25px;
+        }
+
+        .code-section label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .code-box {
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .code-box:hover {
+            border-color: #00d9ff;
+            box-shadow: 0 4px 12px rgba(0, 217, 255, 0.2);
+        }
+
+        .code-box .code-text {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: 600;
+            color: #00a8cc;
+            word-break: break-all;
+            user-select: all;
+            cursor: text;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .code-box .loading {
+            color: #999;
+            font-style: italic;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d9ff 0%, #00a8cc 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 217, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #eeeeee;
+            border-color: #00d9ff;
+            color: #00a8cc;
+        }
+
+        .instructions-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .instructions-box h3 {
+            color: #1565c0;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instructions-box ol {
+            margin-left: 20px;
+            color: #1976d2;
+        }
+
+        .instructions-box li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .instructions-box code {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #d32f2f;
+        }
+
+        .example-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .example-box strong {
+            color: #e65100;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .example-box code {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: block;
+            font-size: 13px;
+            color: #d84315;
+            word-break: break-all;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #fafafa;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: #00a8cc;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .code-box .code-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span class="icon">✅</span>
+                치지직 인증 완료
+            </h1>
+            <p>휘윤 봇 인증이 성공적으로 완료되었습니다</p>
+        </div>
+
+        <div class="content">
+            <div class="success-box">
+                <div class="check-icon">✓</div>
+                <div class="text">
+                    <h2>인증 성공!</h2>
+                    <p>아래 인증 코드를 복사하여 Discord 봇에 입력하세요.</p>
+                </div>
+            </div>
+
+            <div class="code-section">
+                <label>🔑 인증 코드</label>
+                <div class="code-box">
+                    <div class="code-text" id="codeText">
+                        <span class="loading">인증 코드를 불러오는 중...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="copyCode()">
+                    <span>📋</span>
+                    <span>코드 복사</span>
+                </button>
+                <button class="btn btn-secondary" onclick="selectCode()">
+                    <span>🔍</span>
+                    <span>코드 선택</span>
+                </button>
+            </div>
+
+            <div class="instructions-box">
+                <h3>
+                    <span>📋</span>
+                    사용 방법
+                </h3>
+                <ol>
+                    <li>위의 <strong>인증 코드</strong>를 복사하세요 (코드 복사 버튼 클릭 또는 직접 선택)</li>
+                    <li>Discord에서 <code>/치지직인증</code> 명령어를 사용하세요</li>
+                    <li>채널 ID 또는 닉네임을 입력하세요</li>
+                    <li><code>인증코드:복사한코드</code> 형식으로 추가하세요</li>
+                </ol>
+
+                <div class="example-box">
+                    <strong>💡 사용 예시:</strong>
+                    <code>/치지직인증 db5d8cabfab3ed69922c4fc964576c3d 인증코드:TNgxuNbKucj1Lw-Byk3h2Tczsy0</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>⚠️ 인증 코드는 한 번만 사용 가능하며, 만료되면 다시 받아야 합니다.</p>
+            <p>문제가 발생하면 관리자에게 문의하세요.</p>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <span>✅</span>
+        <span id="toastMessage">인증 코드가 복사되었습니다!</span>
+    </div>
+
+    <script>
+        // URL에서 인증 코드 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+
+        const codeTextElement = document.getElementById('codeText');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        if (code) {
+            codeTextElement.innerHTML = code;
+            codeTextElement.classList.remove('loading');
+        } else {
+            codeTextElement.innerHTML = '<span style="color: #d32f2f;">❌ 인증 코드를 찾을 수 없습니다.</span>';
+            codeTextElement.classList.remove('loading');
+        }
+
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function copyCode() {
+            if (!code) {
+                showToast('인증 코드가 없습니다.');
+                return;
+            }
+
+            navigator.clipboard.writeText(code).then(() => {
+                showToast('✅ 인증 코드가 클립보드에 복사되었습니다!');
+            }).catch(err => {
+                // 클립보드 API 실패 시 대체 방법
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('✅ 인증 코드가 복사되었습니다!');
+                } catch (err) {
+                    showToast('❌ 복사에 실패했습니다. 코드를 직접 선택하세요.');
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
+        function selectCode() {
+            if (!code) {
+                showToast('인증 코드가 없습니다.');
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeTextElement);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            showToast('코드가 선택되었습니다. Ctrl+C (또는 Cmd+C)로 복사하세요.');
+        }
+
+        // 페이지 로드 시 코드 자동 선택 (복사 편의)
+        window.addEventListener('load', function() {
+            if (code) {
+                // 약간의 지연 후 선택 (애니메이션 완료 후)
+                setTimeout(() => {
+                    codeTextElement.style.userSelect = 'all';
+                }, 500);
+            }
+        });
+
+        // 키보드 단축키 지원
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+C 또는 Cmd+C로 복사
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                if (window.getSelection().toString() === code) {
+                    showToast('✅ 복사 완료!');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
